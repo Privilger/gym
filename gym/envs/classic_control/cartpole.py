@@ -101,7 +101,14 @@ class CartPoleEnv(gym.Env[np.ndarray, Union[int, np.ndarray]]):
             dtype=np.float32,
         )
 
-        self.action_space = spaces.Discrete(2)
+        force_range = np.array(
+            [
+                50.
+            ],
+            dtype=np.float32,
+        )
+
+        self.action_space = spaces.Box(-force_range, force_range, dtype=np.float32)
         self.observation_space = spaces.Box(-high, high, dtype=np.float32)
 
         self.screen = None
@@ -116,7 +123,8 @@ class CartPoleEnv(gym.Env[np.ndarray, Union[int, np.ndarray]]):
         assert self.action_space.contains(action), err_msg
         assert self.state is not None, "Call reset before using step method."
         x, x_dot, theta, theta_dot = self.state
-        force = self.force_mag if action == 1 else -self.force_mag
+        # force = self.force_mag if action == 1 else -self.force_mag
+        force = action
         costheta = math.cos(theta)
         sintheta = math.sin(theta)
 
