@@ -185,7 +185,11 @@ class CartPoleEnv(gym.Env[np.ndarray, Union[int, np.ndarray]]):
         options: Optional[dict] = None,
     ):
         super().reset(seed=seed)
-        self.state = self.np_random.uniform(low=-0.05, high=0.05, size=(4,))
+        self.state = np.zeros(4, dtype=np.float32)
+        self.state[0] = self.np_random.uniform(low=-0.1, high=0.1, size=(1,))
+        self.state[1] = self.np_random.uniform(low=-0.1, high=0.1, size=(1,))
+        self.state[2] = self.np_random.uniform(low=-np.pi, high=np.pi, size=(1,))
+        self.state[3] = self.np_random.uniform(low=-3, high=3, size=(1,))
         self.steps_beyond_done = None
         if not return_info:
             return np.array(self.state, dtype=np.float32)
